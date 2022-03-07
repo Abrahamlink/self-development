@@ -1,0 +1,54 @@
+.habit-container {
+    margin-bottom: 100px;
+    padding: 32px 16px;
+}
+
+.habit-title {
+    margin-bottom: 32px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.habit-wrapper {
+}
+
+.habit-days {
+    font-size: 18px;
+}
+
+.day__item {
+    padding: 0.75rem 3rem;
+    position: relative;
+}
+.current {
+    margin: 7px 0;
+    padding: 1.15rem 3rem;
+    border: 5px ridge rgb(184, 177, 143);
+}
+.day__item span {
+    font-weight: bold;
+    font-size: 24px;
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    text-align: center;
+}
+
+.day__item .day-completed {
+    font-size: 28px;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.day__item .uncompleted {
+    right: 26px;
+}
+
+.day__item form {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+}

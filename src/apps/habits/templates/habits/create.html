@@ -1,0 +1,17 @@
+{% extends 'todo/base.html' %}
+{% load static %}
+{% block title %}Create New Habit{% endblock %}
+{% block content %}
+    <div class="container habit-form-container">
+        <h1 class="display-3 habit-form-title" style="text-align: center;">Create New Habit</h1>
+        <div class="row habit-form-wrapper">
+            <form method="post" style="width: 70%; margin: 10px auto;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <label for="id_period"><span id="range-value">21</span> days</label>
+                <input type="range" class="form-control-range" id="id_period" name="period" max="40" min="0" value="21" step="1">
+                <button type="submit" class="btn btn-outline-success" style="width: 100%; margin-top: 20px;">Create</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
