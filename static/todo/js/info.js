@@ -30,10 +30,10 @@ $(document).ready(function() {
     // date
     day = date.getDate()
     month = date.getMonth() + 1
-    if (day.toString.length == 1) {
+    if (day < 10) {
         day = `0${day}`
     }
-    if (month.toString.length == 1) {
+    if (month < 10) {
         month = `0${month}`
     }
     dateBlock.text(`${day}.${month}.${date.getFullYear()}`)
