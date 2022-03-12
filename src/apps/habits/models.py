@@ -23,6 +23,12 @@ class Habit(models.Model):
         day = Day.objects.filter(habit=self, date=datetime.date.today())[0]
         return day.is_completed
 
+    def is_finished(self):
+        days = Day.objects.filter(habit=self).order_by('-date')
+        if days[0].date < datetime.date.today() or days[0].is_completed:
+            return True
+        return False
+
     class Meta:
         verbose_name = 'Habit'
         verbose_name_plural = 'Habits'

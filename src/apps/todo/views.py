@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
 from .models import Task
@@ -8,6 +9,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 import datetime
 from zoneinfo import ZoneInfo
+import pyowm
 
 
 def todo_list(request):
@@ -21,7 +23,7 @@ def todo_list(request):
         todos = [*important, *simple]
     except TypeError:
         todos = []
-    return render(request, template, {'todos': todos})
+    return render(request, template, {'todos': todos, 'list': 1})
 
 
 def completed_todos(request):
@@ -40,7 +42,7 @@ def completed_todos(request):
                 if todo.finish_date is not None:
                     filtered_by_finish_date.append(todo)
 
-    return render(request, template, {'completed': filtered_by_finish_date})
+    return render(request, template, {'completed': filtered_by_finish_date, 'list': 0})
 
 
 def create_task(request):
@@ -97,8 +99,11 @@ def complete_task(request, task_id):
     if not request.user.is_anonymous or request.method == 'GET':
         if request.method == 'POST':
             task = Task.objects.get(pk=task_id)
-            zone = ZoneInfo(settings.TIME_ZONE)
-            task.finish_date = datetime.datetime.now(zone)
+            try:
+                zone = ZoneInfo(settings.TIME_ZONE)
+                task.finish_date = datetime.datetime.now(zone)
+            except:
+                task.finish_date = datetime.datetime.now()
             task.save()
         return redirect('all_todos')
     else:
@@ -163,3 +168,16 @@ def logout_user(request):
     if request.method == 'POST':
         logout(request)
         return redirect('loginUser')
+
+
+def render_json_with_weather(request):
+    owm = pyowm.OWM(settings.OWM_TOKEN)
+    mgr = owm.weather_manager()
+
+    place = settings.TIME_ZONE.split('/')[1]
+    observation = mgr.weather_at_place(place)
+    w = observation.weather
+
+    temp = w.temperature('celsius')['temp']
+
+    return JsonResponse({'w': temp}, safe=False)

@@ -50,7 +50,7 @@ def habit_detail(request, pk):
     if not request.user.is_anonymous:
         template = 'habits/habit_details.html'
         habit = Habit.objects.get(user=request.user, pk=pk)
-        days = Day.objects.filter(habit=habit)
+        days = Day.objects.filter(habit=habit).order_by('date')
     else:
         return redirect('loginUser')
     return render(request, template, context={

@@ -34,8 +34,10 @@
 
             </div>                
             {% endfor %}
-            {% if completed|length == 0 %}
+            {% if list == 1 %}
                 <a class="completed-link" href="{% url 'completed_todos' %}"><button type="button" class="btn btn-secondary">Completed Tasks</button></a>
+            {%  else %}
+                <a class="completed-link" href="{% url 'all_todos' %}"><button type="button" class="btn btn-secondary">Active Tasks</button></a>
             {% endif %}
             {% for todo in completed %}
             <div class="alert alert-dark todo-block todo-completed-block" role="alert">

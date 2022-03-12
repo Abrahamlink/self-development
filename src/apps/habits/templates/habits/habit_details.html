@@ -5,29 +5,38 @@
 <link rel="stylesheet" href="{% static 'habits/habit_details.css' %}">
     <div class="container habit-container">
         <h1 class="display-3 habit-title">{{ habit.title }}<span> - </span>{{ habit.period }} days</h1>
+        <p>{{ habit.is_finished }}</p>
         <div class="row habit-wrapper">
 
-            <ul class="list-group habit-days w-100">
-                {% for index, day in days %}
-                <li class="list-group-item list-group-item-action {% if day.date <= today %}{% if day.is_completed %} list-group-item-success{% else %} list-group-item-warning{% endif %}{% else %} list-group-item-info{% endif %} day__item">
-                    <span>{{ index }}</span>{{ habit.title }} in proccess {% if day.today %}<span style="font-size: 16px;font-weight:bold;position:initial">TODAY</span>{% endif %}
-                    <p class="text-justify day-date mb-0" data="{{ day.date|date:'Y n j' }}">{{ day.date|date:'d F Y' }}</p>
-                    {% if day.is_completed %}
-                        <i class="fa-solid fa-check day-completed"></i>
-                    {% elif day.is_completed == False and day.date < today %}
-                        <i class="fa-solid fa-xmark day-completed uncompleted"></i>
-                    {% endif %}
+            {% if habit.is_finished %}
+                <h1 class="display-2">Results</h1>
+                <p>You have just finished make your habit. </p>
+                <div class="habit-results">
                     
-                    {% if day.today and day.is_completed == False %}
-                        <form action="{% url 'complete_day' day.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-success">DONE</button>
-                        </form>
-                    {% endif %}
-                    
-                </li>
-                {% endfor %}
-            </ul>
+                </div>
+            {% else %}
+                <ul class="list-group habit-days w-100">
+                    {% for index, day in days %}
+                    <li class="list-group-item list-group-item-action {% if day.date <= today %}{% if day.is_completed %} list-group-item-success{% else %} list-group-item-warning{% endif %}{% else %} list-group-item-info{% endif %} day__item">
+                        <span>{{ index }}</span>{{ habit.title }} in proccess {% if day.today %}<span style="font-size: 16px;font-weight:bold;position:initial">TODAY</span>{% endif %}
+                        <p class="text-justify day-date mb-0" data="{{ day.date|date:'Y n j' }}">{{ day.date|date:'d F Y' }}</p>
+                        {% if day.is_completed %}
+                            <i class="fa-solid fa-check day-completed"></i>
+                        {% elif day.is_completed == False and day.date < today %}
+                            <i class="fa-solid fa-xmark day-completed uncompleted"></i>
+                        {% endif %}
+                        
+                        {% if day.today and day.is_completed == False %}
+                            <form action="{% url 'complete_day' day.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success">DONE</button>
+                            </form>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
         </div>
     </div>
 {% endblock %}

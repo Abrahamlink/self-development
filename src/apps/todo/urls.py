@@ -7,4 +7,5 @@ urlpatterns = [
     path('create/', views.create_task, name='create_task'),
     path('delete&id=<int:task_id>/', views.delete_task, name='delete_task'),
     path('complete&id=<int:task_id>/', views.complete_task, name='complete_task'),
+    path('get_weather', views.render_json_with_weather, name='get_weather'),
 ]
