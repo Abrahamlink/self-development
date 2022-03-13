@@ -41,7 +41,7 @@ pip-delete-this-directory.txt
 
 
 #psd
-.psd
+*.psd
 
 # Unit test / coverage reports
 htmlcov/
