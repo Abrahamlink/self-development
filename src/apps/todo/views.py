@@ -60,8 +60,8 @@ def create_task(request):
             desc = request.POST['description'].split('\r')
             desc = ''.join([string.replace('\n', '<br>') for string in desc])
             new_task = Task(
-                title=request.POST['title'],
-                description=desc,
+                title=request.POST['title'].strip(),
+                description=desc.strip(),
                 is_important=important,
                 user=request.user,
             )
@@ -74,6 +74,7 @@ def create_task(request):
                 new_task.deadline = datetime.datetime(int(date[0]), int(date[1]), date[2], hour, minute)
                 new_task.deadline_is_matched = True
             except Exception as e:
+                print(e)
                 new_task.deadline = datetime.datetime.now()
             new_task.save()
             return redirect('all_todos')
@@ -82,15 +83,14 @@ def create_task(request):
 
 
 def delete_task(request, task_id):
-    if not request.user.is_anonymous or request.method == 'GET':
+    if not request.user.is_anonymous:
         if request.method == 'POST':
             task = Task.objects.get(pk=task_id)
-            if task.finish_date is not None:
-                link = 'completed_todos'
-            else:
-                link = 'all_todos'
             task.delete()
-        return redirect(link)
+            if task.finish_date is not None:
+                return redirect('completed_todos')
+            else:
+                return redirect('all_todos')
     else:
         return redirect('loginUser')
 
@@ -102,7 +102,8 @@ def complete_task(request, task_id):
             try:
                 zone = ZoneInfo(settings.TIME_ZONE)
                 task.finish_date = datetime.datetime.now(zone)
-            except:
+            except Exception as _ex:
+                print(_ex)
                 task.finish_date = datetime.datetime.now()
             task.save()
         return redirect('all_todos')
@@ -153,8 +154,8 @@ def login_user(request):
         if not request.user.is_anonymous:
             try:
                 logout(request)
-            except:
-                pass
+            except Exception as _ex:
+                print(_ex)
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is not None:
             login(request, user)

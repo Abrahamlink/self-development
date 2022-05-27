@@ -24,11 +24,11 @@
                 <div class="todo-buttons">
                     <form action="{% url 'complete_task' todo.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-success">COMPLETE</button>
+                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-check"></i></button>
                     </form>
                     <form action="{% url 'delete_task' todo.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">DELETE</button>
+                        <button type="submit" class="btn btn-danger"><i class="fa-solid fa-xmark"></i></button>
                     </form>
                 </div>
 

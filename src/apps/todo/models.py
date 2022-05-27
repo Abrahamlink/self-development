@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Task(models.Model):
-    title = models.CharField('Task title', max_length=250)
+    title = models.CharField('Task title', max_length=100)
     description = models.TextField('Note for task', blank=True)
     deadline = models.DateTimeField('When it mast be achieved', blank=True, null=True)
     created_date = models.DateTimeField('Date of creating task', auto_now_add=True)
@@ -16,7 +16,7 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'Task'
         verbose_name_plural = 'Tasks'
-        ordering = ('title',)
+        ordering = ('finish_date',)
 
     def __str__(self):
         return self.title
